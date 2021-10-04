@@ -6,14 +6,11 @@ namespace DioProjeto
     {
         static void Main(string[] args)
         {
-            Conta minhaConta = new Conta();
+            Conta minhaConta = new Conta(TipoConta.PessoaFisica, 0, 0, "Gabriel Alexandre");
+          
+            Console.WriteLine(minhaConta.ToString());
 
-            minhaConta.Nome = "Gabriel";
-
-            Console.WriteLine("Hello World!");
-
-
-
+           //Eliezer
         }
     }
 }
