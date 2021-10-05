@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace DioProjeto
 {
@@ -9,14 +10,16 @@ namespace DioProjeto
         private double Saldo { get; set; }
         private double Credito { get; set; }
         private string Nome { get; set; }
+        private string Senha { get; set; }
 
-        public Conta(TipoConta tipoConta, double saldo, double credito, string nome) 
+        public Conta(TipoConta tipoConta, double saldo, double credito, string nome, string senha) 
         {
 
             this.TipoConta = tipoConta;
             this.Saldo = saldo;
             this.Credito = credito;
             this.Nome = nome;
+            this.Senha = senha;
 
         }
 

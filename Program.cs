@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace DioProjeto
 {
@@ -9,7 +10,6 @@ namespace DioProjeto
 
         static void Main(string[] args)
         {
-            //Conta minhaConta = new Conta(TipoConta.PessoaFisica, 0, 0, "Gabriel Alexandre");
             string opcaoUsuario = ObterOpcaoUsuario();
 
             while(opcaoUsuario.ToUpper() != "X")
@@ -44,9 +44,6 @@ namespace DioProjeto
 
             Console.WriteLine("Obrigado por utilizar nossos serviços.");
             Console.ReadLine();
-
-           //Console.WriteLine(minhaConta.ToString());
-           //Eliezer
         }
 
         private static void Transferir()
@@ -67,7 +64,7 @@ namespace DioProjeto
         {
             Console.Write("Digite o número da conta:");
             int indiceConta = int.Parse(Console.ReadLine());
-
+            
             Console.Write("Digite o valor a ser sacado: ");
             double valorDeposito = double.Parse(Console.ReadLine());
 
@@ -102,15 +99,32 @@ namespace DioProjeto
             Console.Write("Digite o crédito ");
             double entradaCredito = double.Parse(Console.ReadLine());
 
+            string senhaUsuario;
+
+            Console.WriteLine("\nDigite abaixo uma senha com os seguintes requesitos:\n " +
+                "Conter 1 ou mais Letra Maiúscula; \n" +
+                "Conter 1 ou mais Letra Minúscula; \n" +
+                "Ter de 8 a 16 Caracteres; \n"
+                );
+            Console.Write("\n Digite a senha da Conta: ");
+       
+            while( ( ValidarSenhaConta(senhaUsuario = Console.ReadLine() )) == false)
+            {
+
+                Console.Write("\n A senha anterior não atende aos requesitos, tente novamente:");
+            }
+
             Conta novaConta = new Conta
             (
                 tipoConta: (TipoConta)entradaTipoConta,
                 saldo: entradaSalario,
                 credito: entradaCredito,
-                nome: entradaNome
+                nome: entradaNome,
+                senha: senhaUsuario
             );
 
             listContas.Add(novaConta);
+            Console.WriteLine("\n Conta criado com Sucesso!");
         }
 
         private static void ListarContas()
@@ -133,8 +147,8 @@ namespace DioProjeto
 
         private static string ObterOpcaoUsuario()
         {
-            Console.Clear();
-            Console.WriteLine("\n DIO BANK a seu Dispor!!!");
+            //Console.Clear();
+            Console.WriteLine("\n DIO BANK a seu Dispor!!!\n");
             Console.WriteLine("informe a opção desejada");
             Console.WriteLine("1 - Listar Contas");
             Console.WriteLine("2 - Inserir nova conta");
@@ -147,7 +161,18 @@ namespace DioProjeto
             string opcaoUsuario = Console.ReadLine().ToUpper();
             Console.WriteLine();
             return opcaoUsuario;
-
         }
+
+        public static bool ValidarSenhaConta(string senha)
+        {
+            if (senha != null && senha.Length > 0)
+            {
+                Regex reg = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$");
+                bool resultado = (reg.IsMatch(senha) ? true : false);
+                return resultado;
+            }
+            return false;
+        }
+
     }
 }
