@@ -17,6 +17,7 @@ namespace DioProjeto
             this.TipoConta = tipoConta;
             this.Saldo = saldo;
             this.Nome = nome;
+            this.Divida = 0;
             this.Senha = senha;
 
         }
@@ -36,8 +37,25 @@ namespace DioProjeto
 
         public void Depositar(double valorDeposito)
         {
-            this.Saldo += valorDeposito;
-            Console.WriteLine("Saldo atual da conta de {0} é {1}", this.Nome, this.Saldo);
+            if(Divida > 0)
+            {
+
+                if(Divida > valorDeposito)
+                {   
+                    Divida -= valorDeposito;
+                }
+                else
+                {
+                    Saldo += (valorDeposito - Divida);
+                    Divida = 0;
+                }
+            }
+            else
+            {
+                this.Saldo += valorDeposito;
+                Console.WriteLine("Saldo atual de: {0} é R${1}", this.Nome, this.Saldo);
+                Console.WriteLine("Saldo Devedor: R$" + Divida);
+            }
 
         }
 
@@ -67,9 +85,9 @@ namespace DioProjeto
         {
             Console.WriteLine(
                 " -- EXTRATO --" +
-                "Titular: "+ Nome +
-                "Saldo: R$"+Saldo +
-                "Saldo Devedor: R$"+ Saldo +
+                "Titular: "+ Nome +"\n"+
+                "Saldo: R$"+Saldo +"\n"+
+                "Saldo Devedor: R$"+ Divida +"\n"+
                 "Crédito: R$"+ CreditoDisponivel()
             );
         }
@@ -80,6 +98,7 @@ namespace DioProjeto
             retorno += "TipoConta >> " + this.TipoConta + "\n";
             retorno += "Nome >> " + this.Nome + "\n";
             retorno += "Saldo >> R$" + this.Saldo + "\n";
+            retorno += "Divida >> R$" + this.Divida + "\n";
             retorno += "Crédito >> R$" + CreditoDisponivel() + "\n";
             retorno += "Senha >>" + this.Senha + "\n";
             return retorno;

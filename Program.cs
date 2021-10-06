@@ -55,24 +55,46 @@ namespace DioProjeto
             Console.Write("Digite o número da conta de origem: ");
             int indiceContaOrigem = int.Parse(Console.ReadLine());
 
-            Console.Write("Digite o número da conta de destino: ");
-            int indiceContaDestino = int.Parse(Console.ReadLine());
+            Console.Write("\n insira a senha da conta de Origem: ");
+            string senha = Console.ReadLine();
 
-            Console.Write("Digite o valor a ser tranferido: ");
-            double valorTransferencia = double.Parse(Console.ReadLine());
+            if (VerificaSenha(indiceContaOrigem, senha))
+            {
+                Console.WriteLine("Ok Senha verificada continue com o processo!");
 
-            listContas[indiceContaOrigem].Transferir(valorTransferencia, listContas[indiceContaDestino]);
+                Console.Write("Digite o número da conta de destino: ");
+                int indiceContaDestino = int.Parse(Console.ReadLine());
+
+                Console.Write("Digite o valor a ser tranferido: ");
+                double valorTransferencia = double.Parse(Console.ReadLine());
+
+                listContas[indiceContaOrigem].Transferir(valorTransferencia, listContas[indiceContaDestino]);
+            }
+            else
+            {
+                Console.WriteLine("Senha Inválida por favor verifique os dados e tente novamente!");
+            }
         }
 
         public static void Sacar()
         {
             Console.Write("Digite o número da conta:");
             int indiceConta = int.Parse(Console.ReadLine());
-            
-            Console.Write("Digite o valor a ser sacado: ");
-            double valorDeposito = double.Parse(Console.ReadLine());
 
-            listContas[indiceConta].Sacar(valorDeposito);
+            Console.Write("\n insira a senha da conta de Origem: ");
+            string senha = Console.ReadLine();
+
+            if (VerificaSenha(indiceConta, senha))
+            {
+                Console.Write("Digite o valor a ser sacado: ");
+                double valorDeposito = double.Parse(Console.ReadLine());
+
+                listContas[indiceConta].Sacar(valorDeposito);
+            }
+            else
+            {
+                Console.WriteLine("Senha Inválida por favor verifique os dados e tente novamente!");
+            }
         }
 
         public static void Depositar()
@@ -85,20 +107,20 @@ namespace DioProjeto
 
             listContas[indiceConta].Depositar(valorDeposito);
         }
-
+        
         public static void Emprestimo()
         {
             bool resposta = false;
             string message= "Por favor tente o processo novamente!";
             Console.WriteLine(
-                "\nInformações sobre o emprestimo: \n" +
-                "# Nós fornecemos Emprestimos de: \n" +
-                "# 40% do valor da conta para Pessoas Jurídicas \n" +
-                "# 15% do valor da conta para Pessoas Físicas \n" +
+                "\nInformações sobre o emprestimo: \n \n" +
+                "# Nós fornecemos Emprestimos de: \n \n" +
+                "# 40% do valor da conta para Pessoas Jurídicas com taxa de 10% sobre o valor de emprestimo \n \n" +
+                "# 15% do valor da conta para Pessoas Físicas com taxa de 18% sobre o valor de emprestimo \n \n" +
                 "# Quando um Emprestimo for concedido só poderá ser feito um novo \n" +
-                "mediante pagamento do saldo devedor. \n" +
+                "mediante pagamento do saldo devedor. \n \n" +
                 "#Todo o dinheiro que for recebido na conta será utilizado \n"+
-                "para pagamento da divida \n"
+                "para pagamento da divida \n \n"
             );
 
             Console.Write("Digite o numero da conta: ");
