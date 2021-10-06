@@ -7,7 +7,6 @@ namespace DioProjeto
     class Program
     {
         static List<Conta> listContas = new List<Conta>();
-
         static void Main(string[] args)
         {
             string opcaoUsuario = ObterOpcaoUsuario();
@@ -31,6 +30,12 @@ namespace DioProjeto
                     case "5":
                         Depositar();
                         break;
+                    case "6":
+                        Emprestimo();
+                        break;
+                    case "7":
+                        Extrato();
+                        break;
                     case "C":
                         Console.Clear();
                         break;
@@ -41,7 +46,6 @@ namespace DioProjeto
                 }
                 opcaoUsuario = ObterOpcaoUsuario();
             }
-
             Console.WriteLine("Obrigado por utilizar nossos serviços.");
             Console.ReadLine();
         }
@@ -69,7 +73,6 @@ namespace DioProjeto
             double valorDeposito = double.Parse(Console.ReadLine());
 
             listContas[indiceConta].Sacar(valorDeposito);
-
         }
 
         public static void Depositar()
@@ -81,6 +84,67 @@ namespace DioProjeto
             double valorDeposito = double.Parse(Console.ReadLine());
 
             listContas[indiceConta].Depositar(valorDeposito);
+        }
+
+        public static void Emprestimo()
+        {
+            bool resposta = false;
+            string message= "Por favor tente o processo novamente!";
+            Console.WriteLine(
+                "\nInformações sobre o emprestimo: \n" +
+                "# Nós fornecemos Emprestimos de: \n" +
+                "# 40% do valor da conta para Pessoas Jurídicas \n" +
+                "# 15% do valor da conta para Pessoas Físicas \n" +
+                "# Quando um Emprestimo for concedido só poderá ser feito um novo \n" +
+                "mediante pagamento do saldo devedor. \n" +
+                "#Todo o dinheiro que for recebido na conta será utilizado \n"+
+                "para pagamento da divida \n"
+            );
+
+            Console.Write("Digite o numero da conta: ");
+            int conta = int.Parse(Console.ReadLine());
+
+            Console.Write("\n Entre com a senha da conta:");
+            string senha = Console.ReadLine();
+            double credito = 0.00, pedido;
+            if (VerificaSenha(conta, senha))
+            {
+                credito = listContas[conta].CreditoDisponivel();
+                Console.WriteLine("O valor máximo disponível é: R$" + credito);
+
+                while (true)
+                {
+                    Console.Write("\n Entre com o valor desejado: ");
+                    pedido = double.Parse(Console.ReadLine());
+
+                    if (pedido > 0 && pedido <= credito)
+                    {
+                        resposta = true;
+                        break;
+                    }
+                }
+
+                if(resposta)
+                {
+                    listContas[conta].Emprestimo(pedido);
+                    message = ("Emprestimo realizado com Sucesso!");
+                }
+            }
+            Console.WriteLine(message);
+        }
+
+        public static void Extrato()
+        {
+            Console.Write("Digite o numero da conta: ");
+            int conta = int.Parse(Console.ReadLine());
+
+            Console.Write("\n Entre com a senha da conta:");
+            string senha = Console.ReadLine();
+
+            if (VerificaSenha(conta, senha))
+            {
+                listContas[conta].Extrato();
+            }
         }
 
         private static void InserirConta()
@@ -96,21 +160,18 @@ namespace DioProjeto
             Console.WriteLine("Digite o saldo inicial: ");
             double entradaSalario = double.Parse(Console.ReadLine());
 
-            Console.Write("Digite o crédito ");
-            double entradaCredito = double.Parse(Console.ReadLine());
-
             string senhaUsuario;
-
-            Console.WriteLine("\nDigite abaixo uma senha com os seguintes requesitos:\n " +
+            Console.WriteLine("\n" +
+                "Digite abaixo uma senha com os seguintes requesitos:\n " +
                 "Conter 1 ou mais Letra Maiúscula; \n" +
                 "Conter 1 ou mais Letra Minúscula; \n" +
                 "Ter de 8 a 16 Caracteres; \n"
-                );
+            );
+
             Console.Write("\n Digite a senha da Conta: ");
        
             while( ( ValidarSenhaConta(senhaUsuario = Console.ReadLine() )) == false)
             {
-
                 Console.Write("\n A senha anterior não atende aos requesitos, tente novamente:");
             }
 
@@ -118,13 +179,12 @@ namespace DioProjeto
             (
                 tipoConta: (TipoConta)entradaTipoConta,
                 saldo: entradaSalario,
-                credito: entradaCredito,
                 nome: entradaNome,
                 senha: senhaUsuario
             );
 
             listContas.Add(novaConta);
-            Console.WriteLine("\n Conta criado com Sucesso!");
+            Console.WriteLine("\n Conta criada com Sucesso!");
         }
 
         private static void ListarContas()
@@ -140,21 +200,22 @@ namespace DioProjeto
             for(int i = 0; i< listContas.Count; i++) 
             {
                 Conta conta = listContas[i];
-                Console.Write("#{0} - ", i);
+                Console.Write("Nª da Conta >> {0} \n ", i);
                 Console.WriteLine(conta);
             }
         }
 
         private static string ObterOpcaoUsuario()
         {
-            //Console.Clear();
-            Console.WriteLine("\n DIO BANK a seu Dispor!!!\n");
+            Console.WriteLine("\nDIO BANK a seu Dispor!!!\n");
             Console.WriteLine("informe a opção desejada");
             Console.WriteLine("1 - Listar Contas");
             Console.WriteLine("2 - Inserir nova conta");
             Console.WriteLine("3 - Transferir");
-            Console.WriteLine("4 - Sacas");
+            Console.WriteLine("4 - Sacar");
             Console.WriteLine("5 - Depositar");
+            Console.WriteLine("6 - Emprestimo");
+            Console.WriteLine("7 - Extrato");
             Console.WriteLine("C - Limpar Tela");
             Console.WriteLine("X - Sair \n");
 
@@ -174,5 +235,19 @@ namespace DioProjeto
             return false;
         }
 
+        public static bool VerificaSenha(int conta, string senha)
+        {
+            bool resposta = false;
+            if ( listContas[conta] != null )
+            {
+                resposta = (listContas[conta].VerificaSenha(senha)) ? true : false;
+            }
+            else
+            {
+                Console.WriteLine("Tentou verificar senha e não conseguiu verificar o objeto de conta!");
+            }
+
+            return resposta;
+        }
     }
 }
