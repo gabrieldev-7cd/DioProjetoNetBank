@@ -31,7 +31,7 @@ namespace DioProjeto
             }
 
             this.Saldo -= ValorSaque;
-            Console.WriteLine("Saldo atual da conta de {0} é {1}", this.Nome, this.Saldo);
+            Console.WriteLine("Saldo atual da conta de {0} é {1}", this.Nome, this.Saldo.ToString("N2"));
             return true;
         }
 
@@ -53,8 +53,8 @@ namespace DioProjeto
             else
             {
                 this.Saldo += valorDeposito;
-                Console.WriteLine("Saldo atual de: {0} é R${1}", this.Nome, this.Saldo);
-                Console.WriteLine("Saldo Devedor: R$" + Divida);
+                Console.WriteLine("Saldo atual de: {0} é R${1}", this.Nome, this.Saldo.ToString("N2"));
+                Console.WriteLine("Saldo Devedor: R$" + Divida.ToString("N2"));
             }
 
         }
@@ -86,9 +86,9 @@ namespace DioProjeto
             Console.WriteLine(
                 " -- EXTRATO --" +
                 "Titular: "+ Nome +"\n"+
-                "Saldo: R$"+Saldo +"\n"+
-                "Saldo Devedor: R$"+ Divida +"\n"+
-                "Crédito: R$"+ CreditoDisponivel()
+                "Saldo: R$"+Saldo.ToString("N2") + "\n"+
+                "Saldo Devedor: R$"+ Divida.ToString("N2") +"\n"+
+                "Crédito: R$"+ CreditoDisponivel().ToString("N2")
             );
         }
 
@@ -97,9 +97,9 @@ namespace DioProjeto
             string retorno = "";
             retorno += "TipoConta >> " + this.TipoConta + "\n";
             retorno += "Nome >> " + this.Nome + "\n";
-            retorno += "Saldo >> R$" + this.Saldo + "\n";
-            retorno += "Divida >> R$" + this.Divida + "\n";
-            retorno += "Crédito >> R$" + CreditoDisponivel() + "\n";
+            retorno += "Saldo >> R$" + this.Saldo.ToString("N2") + "\n";
+            retorno += "Divida >> R$" + this.Divida.ToString("N2") + "\n";
+            retorno += "Crédito >> R$" + CreditoDisponivel().ToString("N2") + "\n";
             retorno += "Senha >>" + this.Senha + "\n";
             return retorno;
         }

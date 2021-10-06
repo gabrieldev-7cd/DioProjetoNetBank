@@ -10,7 +10,6 @@ namespace DioProjeto
         static void Main(string[] args)
         {
             string opcaoUsuario = ObterOpcaoUsuario();
-
             while(opcaoUsuario.ToUpper() != "X")
             {
                 switch(opcaoUsuario)
@@ -61,7 +60,6 @@ namespace DioProjeto
             if (VerificaSenha(indiceContaOrigem, senha))
             {
                 Console.WriteLine("Ok Senha verificada continue com o processo!");
-
                 Console.Write("Digite o número da conta de destino: ");
                 int indiceContaDestino = int.Parse(Console.ReadLine());
 
@@ -132,7 +130,7 @@ namespace DioProjeto
             if (VerificaSenha(conta, senha))
             {
                 credito = listContas[conta].CreditoDisponivel();
-                Console.WriteLine("O valor máximo disponível é: R$" + credito);
+                Console.WriteLine("O valor máximo disponível é: R$" + credito.ToString("N2"));
 
                 while (true)
                 {
@@ -184,13 +182,13 @@ namespace DioProjeto
 
             string senhaUsuario;
             Console.WriteLine("\n" +
-                "Digite abaixo uma senha com os seguintes requesitos:\n " +
+                "Digite abaixo uma senha com os seguintes requesitos: \n" +
                 "Conter 1 ou mais Letra Maiúscula; \n" +
                 "Conter 1 ou mais Letra Minúscula; \n" +
                 "Ter de 8 a 16 Caracteres; \n"
             );
 
-            Console.Write("\n Digite a senha da Conta: ");
+            Console.Write("\n> Digite a senha da Conta: ");
        
             while( ( ValidarSenhaConta(senhaUsuario = Console.ReadLine() )) == false)
             {
