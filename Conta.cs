@@ -39,7 +39,6 @@ namespace DioProjeto
         {
             if(Divida > 0)
             {
-
                 if(Divida > valorDeposito)
                 {   
                     Divida -= valorDeposito;
@@ -84,7 +83,7 @@ namespace DioProjeto
         public void Extrato()
         {
             Console.WriteLine(
-                " -- EXTRATO --" +
+                "\n \n -- EXTRATO --\n" +
                 "Titular: "+ Nome +"\n"+
                 "Saldo: R$"+Saldo.ToString("N2") + "\n"+
                 "Saldo Devedor: R$"+ Divida.ToString("N2") +"\n"+
@@ -95,7 +94,7 @@ namespace DioProjeto
         public override string ToString()
         {
             string retorno = "";
-            retorno += "TipoConta >> " + this.TipoConta + "\n";
+            retorno += "\nTipoConta >> " + this.TipoConta + "\n";
             retorno += "Nome >> " + this.Nome + "\n";
             retorno += "Saldo >> R$" + this.Saldo.ToString("N2") + "\n";
             retorno += "Divida >> R$" + this.Divida.ToString("N2") + "\n";
@@ -123,6 +122,5 @@ namespace DioProjeto
             }
             return resposta;
         }
-
     }
 }

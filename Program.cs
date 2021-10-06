@@ -38,70 +38,68 @@ namespace DioProjeto
                     case "C":
                         Console.Clear();
                         break;
-
                     default:
-                        throw new ArgumentOutOfRangeException();
-
+                        Console.WriteLine("Nenhuma opção válida foi selecionada, tente novamente!");
+                        break;
                 }
                 opcaoUsuario = ObterOpcaoUsuario();
             }
             Console.WriteLine("Obrigado por utilizar nossos serviços.");
-            Console.ReadLine();
         }
 
         private static void Transferir()
         {
             Console.Write("Digite o número da conta de origem: ");
-            int indiceContaOrigem = int.Parse(Console.ReadLine());
+            int indiceContaOrigem = GetCodigoConta();
 
             Console.Write("\n insira a senha da conta de Origem: ");
-            string senha = Console.ReadLine();
+            string senha = GetEntradaString();
 
             if (VerificaSenha(indiceContaOrigem, senha))
             {
                 Console.WriteLine("Ok Senha verificada continue com o processo!");
-                Console.Write("Digite o número da conta de destino: ");
-                int indiceContaDestino = int.Parse(Console.ReadLine());
+                Console.Write("\nDigite o número da conta de destino: ");
+                int indiceContaDestino = GetCodigoConta();
 
-                Console.Write("Digite o valor a ser tranferido: ");
-                double valorTransferencia = double.Parse(Console.ReadLine());
+                Console.Write("\nDigite o valor a ser tranferido: ");
+                double valorTransferencia = GetEntradaDouble();
 
                 listContas[indiceContaOrigem].Transferir(valorTransferencia, listContas[indiceContaDestino]);
             }
             else
             {
-                Console.WriteLine("Senha Inválida por favor verifique os dados e tente novamente!");
+                Console.WriteLine("\nSenha Inválida por favor verifique os dados e tente novamente!");
             }
         }
 
         public static void Sacar()
         {
-            Console.Write("Digite o número da conta:");
-            int indiceConta = int.Parse(Console.ReadLine());
-
-            Console.Write("\n insira a senha da conta de Origem: ");
-            string senha = Console.ReadLine();
+            Console.Write("\nDigite o número da conta:");
+            int indiceConta = GetCodigoConta();
+         
+            Console.Write("\ninsira a senha da conta de Origem: ");
+            string senha = GetEntradaString();
 
             if (VerificaSenha(indiceConta, senha))
             {
-                Console.Write("Digite o valor a ser sacado: ");
-                double valorDeposito = double.Parse(Console.ReadLine());
+                Console.Write("\nDigite o valor a ser sacado: ");
+                double valorDeposito = GetEntradaDouble();
 
                 listContas[indiceConta].Sacar(valorDeposito);
             }
             else
             {
-                Console.WriteLine("Senha Inválida por favor verifique os dados e tente novamente!");
+                Console.WriteLine("\nSenha Inválida por favor verifique os dados e tente novamente!");
             }
         }
 
         public static void Depositar()
         {
-            Console.Write("Digite o número da conta: ");
-            int indiceConta = int.Parse(Console.ReadLine());
-
-            Console.Write("Digite o valor a ser depositado: ");
-            double valorDeposito = double.Parse(Console.ReadLine());
+            Console.Write("\nDigite o código da conta: ");
+            int indiceConta = GetCodigoConta();
+          
+            Console.Write("\nDigite o valor a ser depositado: ");
+            double valorDeposito = GetEntradaDouble();
 
             listContas[indiceConta].Depositar(valorDeposito);
         }
@@ -122,10 +120,10 @@ namespace DioProjeto
             );
 
             Console.Write("Digite o numero da conta: ");
-            int conta = int.Parse(Console.ReadLine());
-
+            int conta = GetCodigoConta();
+           
             Console.Write("\n Entre com a senha da conta:");
-            string senha = Console.ReadLine();
+            string senha = GetEntradaString();
             double credito = 0.00, pedido;
             if (VerificaSenha(conta, senha))
             {
@@ -135,7 +133,7 @@ namespace DioProjeto
                 while (true)
                 {
                     Console.Write("\n Entre com o valor desejado: ");
-                    pedido = double.Parse(Console.ReadLine());
+                    pedido = GetEntradaDouble();
 
                     if (pedido > 0 && pedido <= credito)
                     {
@@ -144,7 +142,7 @@ namespace DioProjeto
                     }
                 }
 
-                if(resposta)
+                if (resposta)
                 {
                     listContas[conta].Emprestimo(pedido);
                     message = ("Emprestimo realizado com Sucesso!");
@@ -156,29 +154,38 @@ namespace DioProjeto
         public static void Extrato()
         {
             Console.Write("Digite o numero da conta: ");
-            int conta = int.Parse(Console.ReadLine());
-
+            int conta = GetCodigoConta();
+            
             Console.Write("\n Entre com a senha da conta:");
-            string senha = Console.ReadLine();
+            string senha = GetEntradaString();
 
             if (VerificaSenha(conta, senha))
             {
                 listContas[conta].Extrato();
-            }
+            }       
         }
 
         private static void InserirConta()
         {
-            Console.WriteLine("Inserir nova conta");
-
+            Console.WriteLine("-- Inserir nova conta --");
             Console.WriteLine("Digite 1 para conta Física ou 2 para Jurídica: ");
-            int entradaTipoConta = int.Parse(Console.ReadLine());
+            int entradaTipoConta = 0;
+
+            while(true)
+            {   
+                entradaTipoConta = int.Parse(Console.ReadLine());
+                if( (entradaTipoConta > 0 && entradaTipoConta <= 2) )
+                {
+                    break;
+                }
+                Console.WriteLine("Digite um valor válido para o tipo de conta");
+            }     
 
             Console.WriteLine("Digite o Nome do Cliente: ");
-            string entradaNome = Console.ReadLine();
+            string entradaNome = GetEntradaString();
 
             Console.WriteLine("Digite o saldo inicial: ");
-            double entradaSalario = double.Parse(Console.ReadLine());
+            double entradaSalario = GetEntradaDouble();
 
             string senhaUsuario;
             Console.WriteLine("\n" +
@@ -189,8 +196,8 @@ namespace DioProjeto
             );
 
             Console.Write("\n> Digite a senha da Conta: ");
-       
-            while( ( ValidarSenhaConta(senhaUsuario = Console.ReadLine() )) == false)
+
+            while ((ValidarSenhaConta(senhaUsuario = Console.ReadLine())) == false)
             {
                 Console.Write("\n A senha anterior não atende aos requesitos, tente novamente:");
             }
@@ -205,15 +212,15 @@ namespace DioProjeto
 
             listContas.Add(novaConta);
             Console.WriteLine("\n Conta criada com Sucesso!");
+         
         }
 
         private static void ListarContas()
         {
-            Console.WriteLine("Listar Contas");
-
+            Console.WriteLine("-- Listar Contas --\n");
             if(listContas.Count == 0) 
             {
-                Console.WriteLine("Nenhuma conta cadastrada.");
+                Console.WriteLine("\nNenhuma conta cadastrada.");
                 return;
             }
 
@@ -266,8 +273,75 @@ namespace DioProjeto
             {
                 Console.WriteLine("Tentou verificar senha e não conseguiu verificar o objeto de conta!");
             }
-
             return resposta;
+        }
+
+        public static int GetCodigoConta()
+        {
+            while (true)
+            {
+                try
+                {
+                    int codigo = int.Parse(Console.ReadLine());
+                    if (listContas[codigo] != null)
+                    {
+                        return codigo;
+                    }
+                }
+                catch (Exception )
+                {
+                    Console.WriteLine("Conta inexistente, por favor insira um Código válido");
+                }
+            }
+        }
+
+        public static string GetEntradaString()
+        {
+            string entrada;
+            while (true)
+            {
+                try
+                {
+                    entrada = Console.ReadLine();
+                    if ( entrada is string && entrada.Length >= 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.Write("\nValor inválido por favor tente novamente!: ");
+                    }
+                }
+                catch (Exception )
+                {
+                    Console.WriteLine("Erro tente novamente!");
+                }
+            }
+            return entrada;
+        }
+
+        public static double GetEntradaDouble()
+        {
+            double entrada;
+            while (true)
+            {
+                try
+                {
+                    entrada = double.Parse(Console.ReadLine());
+                    if (entrada >= 0)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.Write("\nValor inválido por favor tente novamente!: ");
+                    }
+                }catch( Exception )
+                {
+                    Console.WriteLine("Erro tente novamente");
+                }
+            }
+            return entrada;
         }
     }
 }
